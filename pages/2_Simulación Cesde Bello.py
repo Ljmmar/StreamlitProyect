@@ -7,7 +7,7 @@ st.set_page_config(layout="wide")
 # Set the page title and header
 st.title("Simulador CESDE Bello")
 
-df = pd.read_csv('datasets\cesde.csv')
+df = pd.read_csv('static/datasets/cesde.csv')
 
 gruposU = sorted(df['GRUPO'].unique())
 nivelesU = sorted(df['NIVEL'].unique())
