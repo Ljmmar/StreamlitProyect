@@ -88,9 +88,34 @@ def filtro2():
         st.subheader(round(conocimiento.mean(),1)) 
   
 # -----------------------------------------------------------------------------------
+
+def filtro3():
+    col1, col2 = st.columns(2)
+    with col1:
+        grupo = st.selectbox("Grupo",gruposU)
+    with col2:
+        momento = st.selectbox("Momento",momentosU)
+    resultado = df[(df['GRUPO']==grupo)&(df['MOMENTO']==momento)]
+   
+    resultado= resultado.reset_index(drop=True) 
+    # Grafico de barras
+    estudiante=resultado['NOMBRE']
+    fig = go.Figure(data=[
+        go.Bar(name='CONOCIMIENTO', x=estudiante, y=resultado['CONOCIMIENTO']),
+        go.Bar(name='DESEMPEÑO', x=estudiante, y=resultado['DESEMPEÑO']),
+        go.Bar(name='PRODUCTO', x=estudiante, y=resultado['PRODUCTO'])
+    ])   
+    fig.update_layout(barmode='group')
+    st.plotly_chart(fig, use_container_width=True)
+    # Tabla
+    st.table(resultado[["NOMBRE","CONOCIMIENTO","DESEMPEÑO","PRODUCTO"]])
+    
+#-----------------------------------------------------------------------------------
+    
 filtros =[
     "Notas por grupo",
-    "Notas por estudiante"
+    "Notas por estudiante",
+    "Notas por submodulo"
 ]
 
 filtro = st.selectbox("Filtros",filtros)
@@ -102,3 +127,5 @@ if filtro:
         filtro1()
     elif filtro_index == 1:
         filtro2()
+    elif filtro_index == 2:
+        filtro3()
