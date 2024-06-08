@@ -9,11 +9,12 @@ st.title("Simulador CESDE Bello")
 
 df = pd.read_csv('static/datasets/cesde.csv')
 
-gruposU = sorted(df['GRUPO'].unique())
+submoduoloU = sorted(df['GRUPO'].unique())
 nivelesU = sorted(df['NIVEL'].unique())
 jornadasU =  sorted(df['JORNADA'].unique())
 horarioU =  sorted(df['HORARIO'].unique())
 submodulosU =  sorted(df['SUBMODULO'].unique())
+nombreU= sorted(df['NOMBRE'].unique())
 docentesU =  sorted(df['DOCENTE'].unique())
 momentosU =  sorted(df['MOMENTO'].unique())
 
@@ -21,7 +22,7 @@ momentosU =  sorted(df['MOMENTO'].unique())
 def filtro1():    
     col1, col2 = st.columns(2)
     with col1:
-        grupo = st.selectbox("Grupo",gruposU)
+        grupo = st.selectbox("Grupo",submoduoloU)
     with col2:
         momento = st.selectbox("Momento",momentosU)
     resultado = df[(df['GRUPO']==grupo)&(df['MOMENTO']==momento)]
@@ -43,7 +44,7 @@ def filtro1():
 def filtro2():
     col1, col2, col3 = st.columns(3)
     with col1:
-        grupo = st.selectbox("Grupo",gruposU)
+        grupo = st.selectbox("Grupo",submoduoloU)
     with col2:
         nombres = df[df['GRUPO']==grupo]
         nombre = st.selectbox("Estudiante",nombres["NOMBRE"])
@@ -92,14 +93,14 @@ def filtro2():
 def filtro3():
     col1, col2 = st.columns(2)
     with col1:
-        grupo = st.selectbox("Grupo",gruposU)
+        submodulo = st.selectbox("Submodulo", submodulosU)
     with col2:
-        momento = st.selectbox("Momento",momentosU)
-    resultado = df[(df['GRUPO']==grupo)&(df['MOMENTO']==momento)]
+        nombre = st.selectbox("Nombre", nombreU)
+    resultado = df[(df['SUBMODULO'] == submodulo) & (df['NOMBRE'] == nombre)]
    
-    resultado= resultado.reset_index(drop=True) 
-    # Grafico de barras
-    estudiante=resultado['NOMBRE']
+    resultado = resultado.reset_index(drop=True) 
+    # Gráfico de barras
+    estudiante = resultado['NOMBRE']
     fig = go.Figure(data=[
         go.Bar(name='CONOCIMIENTO', x=estudiante, y=resultado['CONOCIMIENTO']),
         go.Bar(name='DESEMPEÑO', x=estudiante, y=resultado['DESEMPEÑO']),
@@ -108,7 +109,8 @@ def filtro3():
     fig.update_layout(barmode='group')
     st.plotly_chart(fig, use_container_width=True)
     # Tabla
-    st.table(resultado[["NOMBRE","CONOCIMIENTO","DESEMPEÑO","PRODUCTO"]])
+    st.table(resultado[["NOMBRE", "CONOCIMIENTO", "DESEMPEÑO", "PRODUCTO"]])
+
     
 #-----------------------------------------------------------------------------------
     
